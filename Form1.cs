@@ -26,15 +26,16 @@ namespace Work
 
             foreach (PropertyInfo prop in typeof(DataObject).GetProperties())
             {
-                //создание столбцов                
-                listView1.Columns.Add("Field" + i, 100);
+                //СОЗДАНИЕ СТОЛБЦОВ              
+                listView1.Columns.Add(prop.Name, 100);
+           
 
-
-                //создание радио кнопки
+                //СОЗДАНИЕ РАДИО КНОПКИ
                 MyRadioButton = new RadioButton();
                 MyRadioButton.Click += RadioButtonSelect;
                 MyRadioButton.Tag = i;
-                MyRadioButton.Text = "Field" + i;
+                MyRadioButton.Name = "Field" + i;
+                MyRadioButton.Text = "" + prop.Name;
                 MyRadioButton.Location = new Point(Xr, Yr);
                 MyRadioButton.AutoSize = true;
                 groupBox1.Controls.Add(MyRadioButton);
@@ -57,7 +58,7 @@ namespace Work
                 //СОЗДАНИЕ ЛЕЙБЛА
                 MyLabel = new Label();
                 MyLabel.Name = "Label" + i;
-                MyLabel.Text = "";
+                MyLabel.Text = "" + prop.Name;
                 MyLabel.Location = new Point(Xl, Yl);
                 MyLabel.AutoSize = true;
                 groupBox2.Controls.Add(MyLabel);
@@ -77,34 +78,36 @@ namespace Work
 
         public class DataObject
         {
-            private string _field0;
-            private DateTime _field1;
-            private int _field2;
-            //private long _field3;
+            private string _field10;
+            private DateTime _field3;
+            private int _field6;
+            private long _field8;
 
-            public string Field0
+            public string Field10
             {
-                get { return _field0; }
-                set { _field0 = value; }
+                get { return _field10; }
+                set { _field10 = value; }
             }
 
-            public DateTime Field1
+            public DateTime Field3
             {
-                get { return _field1; }
-                set { _field1 = value; }
+                get { return _field3; }
+                set { _field3 = value; }
             }
 
-            public int Field2
+            public int Field6
             {
-                get { return _field2; }
-                set { _field2 = value; }
+                get { return _field6; }
+                set { _field6 = value; }
             }
 
-            //public long Field3
-            //{
-            //    get { return _field3; }
-            //    set { _field3 = value; }
-            //}
+            public long Field8
+            {
+                get { return _field8; }
+                set { _field8 = value; }
+            }
+
+            public decimal Field7 { get; set; }
         }
 
 
@@ -114,20 +117,12 @@ namespace Work
         DataObject dataObject = new DataObject();
         private void Button1_Click(object sender, EventArgs e)
         {
-            Type t = typeof(DataObject); int j = 0;
-            foreach (var prop in t.GetProperties())
-            {
-                if (prop.PropertyType.Name == groupBox2.Controls.Find("TextBox2", false)[0].Text) { }
-                j++;
-            }
-
             ListViewItem item1 = new ListViewItem("" + (groupBox2.Controls.Find("TextBox0", false))[0].Text);
             for (int m = 1; m < i; m++) { item1.SubItems.Add("" + (groupBox2.Controls.Find("TextBox" + m, false))[0].Text); }
 
             listView1.Items.AddRange(new ListViewItem[] { item1 });
             sort();
         }
-
 
 
 
@@ -183,6 +178,7 @@ namespace Work
 
 
 
+
         //ПЕРЕНОС ДАННЫХ ТАБЛИЦЫ В ТЕКСТБОКС
         int ind;
         public void ListView1_ItemSelectionChanged_1(object sender, ListViewItemSelectionChangedEventArgs e)
@@ -197,7 +193,6 @@ namespace Work
         }
         private void ListView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Console.WriteLine(ind);
             foreach (ListViewItem eachItem in listView1.SelectedItems)
             {
                 ListViewItem item = listView1.SelectedItems[0];
